@@ -32,6 +32,8 @@ function App() {
     additionalCards: 0,
     // Settings: Show tip (legend) on card
     hideTip: false,
+    // Settings: Show QR code in svg format
+    svgImage: true,
   });
   const [errors, setErrors] = useState({
     ssidError: '',
@@ -118,6 +120,9 @@ function App() {
   const onOrientationChange = (portrait) => {
     setSettings({ ...settings, portrait });
   };
+  const onSvgImageChange = (svgImage) => {
+    setSettings({ ...settings, svgImage });
+  };
   const onHidePasswordChange = (hidePassword) => {
     setSettings({ ...settings, hidePassword });
   };
@@ -188,6 +193,7 @@ function App() {
         onHiddenSSIDChange={onHiddenSSIDChange}
         onAdditionalCardsChange={onAdditionalCardsChange}
         onHideTipChange={onHideTipChange}
+        onSvgImageChange={onSvgImageChange}
       />
 
       <Button

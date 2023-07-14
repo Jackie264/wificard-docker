@@ -34,6 +34,7 @@ export const Translations = [
       'wifi.alert.eapIdentity': 'Identity cannot be empty',
       'button.rotate': 'Rotate',
       'button.print': 'Print',
+      'button.svg': 'Show QR code in SVG format',
       select: 'Select Language',
     },
   },

@@ -57,6 +57,11 @@ export const Settings = (props) => {
         onChange={() => props.onOrientationChange(!props.settings.portrait)}
       />
       <Checkbox
+        label={t('button.svg')}
+        checked={props.settings.svgImage}
+        onChange={() => props.onSvgImageChange(!props.settings.svgImage)}
+      />
+      <Checkbox
         label={t('wifi.password.hide')}
         checked={props.settings.hidePassword}
         onChange={() =>

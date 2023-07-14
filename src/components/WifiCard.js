@@ -8,7 +8,7 @@ import {
   Text,
   TextareaField,
 } from 'evergreen-ui';
-import QRCode from 'qrcode.react';
+import { QRCodeCanvas, QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import logo from '../../src/images/wifi.png';
@@ -71,6 +71,31 @@ export const WifiCard = (props) => {
     return !eapIdentityFieldLabel() ? '' : t('wifi.encryption.eapMethod');
   };
 
+  const qrcodeComponent = () => {
+    if (props.settings.svgImage) {
+      return (
+        <QRCodeSVG
+          className="qrcode"
+          style={{
+            marginBottom: props.settings.portrait ? '1em' : '0',
+            width: '250px',
+          }}
+          value={qrvalue}
+          size={150}
+        />
+      );
+    }
+
+    return (
+      <QRCodeCanvas
+        className="qrcode"
+        style={{ marginBottom: props.settings.portrait ? '1em' : '0' }}
+        value={qrvalue}
+        size={150}
+      />
+    );
+  };
+
   return (
     <Card
       className="card-print"
@@ -93,12 +118,7 @@ export const WifiCard = (props) => {
         className="details"
         style={{ flexDirection: props.settings.portrait ? 'column' : 'row' }}
       >
-        <QRCode
-          className="qrcode"
-          style={{ marginBottom: props.settings.portrait ? '1em' : '0' }}
-          value={qrvalue}
-          size={150}
-        />
+        {qrcodeComponent()}
 
         <Pane width={'100%'}>
           <TextareaField
