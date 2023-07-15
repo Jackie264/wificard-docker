@@ -76,6 +76,7 @@ export const WifiCard = (props) => {
       return (
         <QRCodeSVG
           className="qrcode"
+          id="qrcode"
           style={{
             marginBottom: props.settings.portrait ? '1em' : '0',
             width: '250px',
@@ -89,6 +90,7 @@ export const WifiCard = (props) => {
     return (
       <QRCodeCanvas
         className="qrcode"
+        id="qrcode"
         style={{ marginBottom: props.settings.portrait ? '1em' : '0' }}
         value={qrvalue}
         size={150}

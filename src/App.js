@@ -141,6 +141,53 @@ function App() {
     firstLoad.current = false;
   };
 
+  const onSaveImage = () => {
+    if (settings.svgImage) {
+      // modify svg headers
+      const svg = document.getElementById('qrcode').cloneNode(true);
+      svg.style = null;
+      svg.removeAttribute('class');
+      svg.removeAttribute('id');
+
+      let svgSource = new XMLSerializer().serializeToString(svg);
+      if (
+        !svgSource.match(/^<svg[^>]+xmlns="http:\/\/www\.w3\.org\/2000\/svg"/)
+      ) {
+        svgSource = svgSource.replace(
+          /^<svg/,
+          '<svg xmlns="http://www.w3.org/2000/svg"'
+        );
+      }
+
+      const svgBlob = new Blob([svgSource], {
+        type: 'image/svg+xml; charset=utf-8',
+      });
+      const svgUrl = URL.createObjectURL(svgBlob);
+
+      const downloadLink = document.createElement('a');
+      downloadLink.href = svgUrl;
+      downloadLink.download = settings.ssid;
+
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+
+      return;
+    }
+
+    document.getElementById('qrcode').toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+
+      const downloadLink = document.createElement('a');
+      downloadLink.href = url;
+      downloadLink.download = settings.ssid;
+
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    });
+  };
+
   useEffect(() => {
     // Ensure the page direction is set properly on first load
     if (htmlDirection() === 'rtl') {
@@ -204,6 +251,15 @@ function App() {
         onClick={onPrint}
       >
         {t('button.print')}
+      </Button>
+      <Button
+        id="saveImage"
+        appearance="primary"
+        height={40}
+        marginRight={16}
+        onClick={onSaveImage}
+      >
+        {t('button.saveImage')}
       </Button>
       <Pane id="print-area">
         {settings.additionalCards >= 0 &&

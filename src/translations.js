@@ -35,6 +35,7 @@ export const Translations = [
       'button.rotate': 'Rotate',
       'button.print': 'Print',
       'button.svg': 'Show QR code in SVG format',
+      'button.saveImage': 'Save QR code image',
       select: 'Select Language',
     },
   },
