@@ -209,7 +209,7 @@ function App() {
 
         <Paragraph marginTop={12}>
           {t('desc.privacy')}{' '}
-          <Link href="https://github.com/bndw/wifi-card">
+          <Link href="https://github.com/Chocobo1/wifi-card-svg">
             {t('desc.source')}
           </Link>
           .
