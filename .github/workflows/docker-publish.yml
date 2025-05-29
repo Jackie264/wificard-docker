@@ -3,7 +3,9 @@ name: 🚀 Build & Push Docker Image
 on:
   push:
     branches:
-      - main  # 监听 main 分支推送事件，可根据需要更改
+      - main
+    paths:
+      - 'Dockerfile'
 
 jobs:
   build-and-push:
@@ -11,7 +13,7 @@ jobs:
 
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🔧 Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -25,7 +27,7 @@ jobs:
       - name: 🛠️ Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: ./wifi-card-svg-master/wifi-card-svg-master  # 项目实际路径
-          file: ./wifi-card-svg-master/wifi-card-svg-master/Dockerfile
+          context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/wifi-card:latest
+          no-cache: true
