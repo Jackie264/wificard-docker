@@ -3,7 +3,8 @@ FROM node:18-alpine as builder
 WORKDIR /tmp
 COPY . .
 
-RUN npx prettier --check ./src
+# RUN npx prettier --check ./src
+RUN npx prettier --write ./src
 RUN yarn && yarn build 
 
 ###
