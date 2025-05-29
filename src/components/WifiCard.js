@@ -18,17 +18,19 @@ import './style.css';
 export const WifiCard = (props) => {
   const { t } = useTranslation();
   const [qrvalue, setQrvalue] = useState('');
+  const { settings, buildWifiQrString } = props;
+
 
   // ** 移除了原有的 escape 函数 **
   // ** 二维码数据现在通过 props.buildWifiQrString 函数生成 **
   useEffect(() => {
     // 调用 App.js 传入的 buildWifiQrString 函数来生成二维码数据
     // 确保 buildWifiQrString 总是可用的，因为它是由父组件传递的
-    if (props.buildWifiQrString) {
-      const generatedQrValue = props.buildWifiQrString(props.settings);
+    if (buildWifiQrString) {
+      const generatedQrValue = buildWifiQrString(settings);
       setQrvalue(generatedQrValue);
     }
-  }, [props.settings, props.buildWifiQrString]); // 依赖 settings 和 buildWifiQrString
+  }, [settings, buildWifiQrString]); // 依赖 settings 和 buildWifiQrString
 
   const portraitWidth = () => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
