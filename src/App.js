@@ -1,4 +1,4 @@
-import { Button, Heading, Link, Pane, Paragraph } from 'eververgreen-ui';
+import { Button, Heading, Link, Pane, Paragraph } from 'evergreen-ui';
 import React, { useEffect, useRef, useState, useCallback } from 'react'; // 引入 useCallback
 import { useTranslation } from 'react-i18next';
 import logo from '../src/images/wifi.png';
