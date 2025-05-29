@@ -341,14 +341,13 @@ function App() {
           onSSIDChange={onSSIDChange}
           onEapIdentityChange={onEapIdentityChange}
           onPasswordChange={onPasswordChange}
-          // 传递 buildWifiQrString 函数给 WifiCard 组件
           buildWifiQrString={buildWifiQrString}
         />
       </Pane>
 
       <Settings
         settings={settings}
-        // 传递 handleFirstLoadLogic 代替原来的 onFirstLoad
+        firstLoad={firstLoad}
         onFirstLoad={handleFirstLoadLogic}
         onLanguageChange={onChangeLanguage}
         onEncryptionModeChange={onEncryptionModeChange}
