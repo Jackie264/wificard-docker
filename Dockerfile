@@ -1,4 +1,4 @@
-FROM node:18-alpine As builder
+FROM node:18-alpine AS builder
 
 WORKDIR /tmp
 COPY . .
