@@ -6,6 +6,7 @@ COPY . .
 # RUN npx prettier --check ./src
 RUN npx prettier --write ./src
 RUN npx update-browserslist-db@latest
+RUN npm install -g npm@11.4.1
 RUN yarn && yarn build 
 
 ###
