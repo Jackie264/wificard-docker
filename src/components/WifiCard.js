@@ -8,6 +8,7 @@ import {
   Text,
   TextareaField,
 } from 'evergreen-ui';
+// 确保你已经安装了 qrcode.react，它包含 QRCodeCanvas 和 QRCodeSVG
 import { QRCodeCanvas, QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,38 +19,16 @@ export const WifiCard = (props) => {
   const { t } = useTranslation();
   const [qrvalue, setQrvalue] = useState('');
 
-  const escape = (v) => {
-    const needsEscape = ['"', ';', ',', ':', '\\'];
-
-    let escaped = '';
-    for (const c of v) {
-      if (needsEscape.includes(c)) {
-        escaped += `\\${c}`;
-      } else {
-        escaped += c;
-      }
-    }
-    return escaped;
-  };
-
+  // ** 移除了原有的 escape 函数 **
+  // ** 二维码数据现在通过 props.buildWifiQrString 函数生成 **
   useEffect(() => {
-    let opts = {};
-
-    opts.T = props.settings.encryptionMode || 'nopass';
-    if (props.settings.encryptionMode === 'WPA2-EAP') {
-      opts.E = props.settings.eapMethod;
-      opts.I = props.settings.eapIdentity;
+    // 调用 App.js 传入的 buildWifiQrString 函数来生成二维码数据
+    // 确保 buildWifiQrString 总是可用的，因为它是由父组件传递的
+    if (props.buildWifiQrString) {
+      const generatedQrValue = props.buildWifiQrString(props.settings);
+      setQrvalue(generatedQrValue);
     }
-    opts.S = escape(props.settings.ssid);
-    opts.P = escape(props.settings.password);
-    opts.H = props.settings.hiddenSSID;
-
-    let data = '';
-    Object.entries(opts).forEach(([k, v]) => (data += `${k}:${v};`));
-    const qrval = `WIFI:${data};`;
-
-    setQrvalue(qrval);
-  }, [props.settings]);
+  }, [props.settings, props.buildWifiQrString]); // 依赖 settings 和 buildWifiQrString
 
   const portraitWidth = () => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -57,18 +36,19 @@ export const WifiCard = (props) => {
   };
 
   const passwordFieldLabel = () => {
-    const hiddenPassword =
-      props.settings.hidePassword || !props.settings.encryptionMode;
+    // 只有在非隐藏密码且有加密模式时才显示密码标签 (None 也视为有加密模式，只是密码为空)
+    const hiddenPassword = props.settings.hidePassword || props.settings.encryptionMode === 'None';
     return hiddenPassword ? '' : t('wifi.password');
   };
 
   const eapIdentityFieldLabel = () => {
-    const hiddenIdentity = props.settings.encryptionMode !== 'WPA2-EAP';
-    return hiddenIdentity ? '' : t('wifi.identity');
+    // 只有在 WPA2-EAP 模式下才显示 EAP 身份标签
+    return props.settings.encryptionMode !== 'WPA2-EAP' ? '' : t('wifi.identity');
   };
 
   const eapMethodFieldLabel = () => {
-    return !eapIdentityFieldLabel() ? '' : t('wifi.encryption.eapMethod');
+    // 只有在 WPA2-EAP 模式下才显示 EAP 方法标签
+    return props.settings.encryptionMode !== 'WPA2-EAP' ? '' : t('wifi.encryption.eapMethod');
   };
 
   const qrcodeComponent = () => {
@@ -76,13 +56,14 @@ export const WifiCard = (props) => {
       return (
         <QRCodeSVG
           className="qrcode"
-          id="qrcode"
+          id="qrcode" // 保持 ID，以便 App.js 中的 onSaveImage 函数可以找到它
           style={{
             marginBottom: props.settings.portrait ? '1em' : '0',
-            width: '250px',
+            // 移除了这里的固定 width: '250px'，让 size 属性控制
           }}
           value={qrvalue}
-          size={150}
+          size={150} // 保持固定大小，或者根据需要调整
+          // viewBox={`0 0 256 256`} // 可选：如果遇到渲染问题，可以尝试添加 viewBox
         />
       );
     }
@@ -90,10 +71,10 @@ export const WifiCard = (props) => {
     return (
       <QRCodeCanvas
         className="qrcode"
-        id="qrcode"
+        id="qrcode" // 保持 ID，以便 App.js 中的 onSaveImage 函数可以找到它
         style={{ marginBottom: props.settings.portrait ? '1em' : '0' }}
         value={qrvalue}
-        size={150}
+        size={150} // 保持固定大小，或者根据需要调整
       />
     );
   };
@@ -120,6 +101,7 @@ export const WifiCard = (props) => {
         className="details"
         style={{ flexDirection: props.settings.portrait ? 'column' : 'row' }}
       >
+        {/* 调用渲染函数来显示二维码 */}
         {qrcodeComponent()}
 
         <Pane width={'100%'}>
@@ -138,6 +120,7 @@ export const WifiCard = (props) => {
             onChange={(e) => props.onSSIDChange(e.target.value)}
             isInvalid={!!props.ssidError}
             validationMessage={!!props.ssidError && props.ssidError}
+            readOnly={props.isPrintMode} // 在打印模式下只读
           />
           {props.settings.encryptionMode === 'WPA2-EAP' && (
             <>
@@ -145,7 +128,7 @@ export const WifiCard = (props) => {
                 id="eapmethod"
                 type="text"
                 marginBottom={5}
-                readOnly={true}
+                readOnly={true} // 始终只读，因为目前只支持 PWD
                 spellCheck={false}
                 label={eapMethodFieldLabel()}
                 value={props.settings.eapMethod}
@@ -167,10 +150,12 @@ export const WifiCard = (props) => {
                 validationMessage={
                   !!props.eapIdentityError && props.eapIdentityError
                 }
+                readOnly={props.isPrintMode} // 在打印模式下只读
               />
             </>
           )}
-          {!(props.settings.hidePassword || !props.settings.encryptionMode) && (
+          {/* 密码字段的显示条件 */}
+          {!(props.settings.hidePassword || props.settings.encryptionMode === 'None') && (
             <TextareaField
               id="password"
               type="text"
@@ -191,6 +176,7 @@ export const WifiCard = (props) => {
               onChange={(e) => props.onPasswordChange(e.target.value)}
               isInvalid={!!props.passwordError}
               validationMessage={!!props.passwordError && props.passwordError}
+              readOnly={props.isPrintMode} // 在打印模式下只读
             />
           )}
         </Pane>
