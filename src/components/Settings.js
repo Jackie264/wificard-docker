@@ -12,6 +12,7 @@ import { Translations } from '../translations';
 import './style.css';
 
 export const Settings = (props) => {
+  console.log('[Settings] firstLoad is', props.firstLoad);
   const { t } = useTranslation();
   const encryptionModes = [
     // 明确添加 'None' 选项，表示开放网络
@@ -30,13 +31,11 @@ export const Settings = (props) => {
   };
 
   useEffect(() => {
-    // 这里的 props.onFirstLoad 依然被调用，但实际逻辑移到了 App.js 的 handleFirstLoadLogic
-    // 这确保了在小屏幕设备上默认设置为纵向打印
-    if (props.firstLoad.current && window.innerWidth < 500) {
-      props.onFirstLoad(); // 通知 App.js 执行首次加载逻辑 (现在包括设置方向)
-      props.onOrientationChange(true); // 默认设置纵向
+    if (props.firstLoad?.current && window.innerWidth < 500) {
+      props.onFirstLoad?.(); // 通知 App.js 执行首次加载逻辑 (现在包括设置方向)
+      props.onOrientationChange?.(true); // 默认设置纵向
     }
-  }, [props]); // 依赖 props，确保 props 更新时 effect 重新运行
+  }, [props.firstLoad, props.onFirstLoad, props.onOrientationChange]);
 
   return (
     <Pane id="settings" maxWidth={props.settings.portrait ? '350px' : '100%'}>
