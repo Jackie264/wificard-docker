@@ -28,4 +28,4 @@ jobs:
           context: ./wifi-card-svg-master/wifi-card-svg-master  # 项目实际路径
           file: ./wifi-card-svg-master/wifi-card-svg-master/Dockerfile
           push: true
-          tags: yourdockerhubusername/wifi-card:latest
+          tags: jackie264/wifi-card:latest
