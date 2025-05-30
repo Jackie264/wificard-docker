@@ -8,6 +8,7 @@ RUN npm install -g prettier@3.5.3
 RUN npx prettier --write ./src
 RUN npm install -g update-browserslist-db@1.1.3
 # RUN npx update-browserslist-db@latest
+RUN npx browserslist@latest --update-db
 RUN yarn && yarn build 
 
 # production image
