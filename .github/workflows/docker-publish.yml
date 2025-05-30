@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - 'Dockerfile'
+      - 'package.json'
 
 jobs:
   build-and-push:
