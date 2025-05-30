@@ -4,21 +4,21 @@
   "homepage": ".",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^14.4.3",
-    "evergreen-ui": "^6.13.1",
-    "i18next": "^22.0.6",
-    "i18next-browser-languagedetector": "^7.0.1",
-    "qrcode.react": "^3.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-i18next": "^12.0.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.5.2",
+    "evergreen-ui": "^7.1.9",
+    "i18next": "^23.11.5",
+    "i18next-browser-languagedetector": "^8.1.0",
+    "qrcode.react": "^4.2.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-i18next": "^15.5.2",
     "react-scripts": "^5.0.1"
   },
   "devDependencies": {
-    "husky": "^8.0.2",
-    "prettier": "2.8.0"
+    "husky": "^9.1.7",
+    "prettier": "3.2.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,7 +43,7 @@
     ]
   },
   "main": "index.js",
-  "repository": "git@github.com:Jackie264/wifi-card-svg.git",
-  "author": "Jackie264 <ben@bdw.to>",
+  "repository": "git@github.com:Jackie264/wificard-docker.git",
+  "author": "Jackie264 <jackie.han@gmail.com>",
   "license": "MIT"
 }
