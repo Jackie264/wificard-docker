@@ -1,5 +1,5 @@
 import { Button, Heading, Link, Pane, Paragraph } from 'evergreen-ui';
-import React, { useEffect, useRef, useState, useCallback } from 'react'; // 引入 useCallback
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import logo from '../src/images/wifi.png';
 import { Settings } from './components/Settings';
@@ -8,9 +8,13 @@ import './style.css';
 import { Translations } from './translations';
 
 function App() {
-  const html = document.querySelector('html');
+  // 变更点 1: 使用 useRef 来存储 html 元素的引用，避免在组件顶层直接访问 document
+  const htmlRef = useRef(null);
+
   const { t, i18n } = useTranslation();
-  const firstLoad = useRef(true);
+  // 变更点 2: 移除 firstLoad useRef，因为其逻辑可以被 useEffect 更好地管理
+  // const firstLoad = useRef(true);
+
   const [settings, setSettings] = useState({
     // Network SSID name
     ssid: '',
@@ -52,10 +56,10 @@ function App() {
   const escapeSpecialChars = useCallback((str) => {
     if (!str) return '';
     return str.replace(/\\/g, '\\\\') // 转义反斜杠
-              .replace(/;/g, '\\;')  // 转义分号
-              .replace(/:/g, '\\:')  // 转义冒号
-              .replace(/,/g, '\\,')  // 转义逗号
-              .replace(/"/g, '\\"'); // 转义双引号
+      .replace(/;/g, '\\;')  // 转义分号
+      .replace(/:/g, '\\:')  // 转义冒号
+      .replace(/,/g, '\\,')  // 转义逗号
+      .replace(/"/g, '\\"'); // 转义双引号
   }, []); // 依赖为空，函数只创建一次
 
   /**
@@ -115,9 +119,12 @@ function App() {
   }, [i18n.language]);
 
   const onChangeLanguage = useCallback((language) => {
-    html.style.direction = htmlDirection(language);
+    // 变更点 3: 使用 htmlRef.current 访问 DOM
+    if (htmlRef.current) {
+      htmlRef.current.style.direction = htmlDirection(language);
+    }
     i18n.changeLanguage(language);
-  }, [html, htmlDirection, i18n]);
+  }, [htmlDirection, i18n]); // 变更点 4: 移除 html 作为依赖
 
   const onPrint = useCallback(() => {
     // 打印前再次检查输入有效性
@@ -145,22 +152,22 @@ function App() {
     }
     // WPA2-EAP 的密码和身份验证
     if (settings.encryptionMode === 'WPA2-EAP') {
-        if (settings.password.length < 1) { // 密码不能为空
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                passwordError: t('wifi.alert.password'),
-            }));
-            return;
-        }
-        if (settings.eapIdentity.length < 1) { // EAP 身份不能为空
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                eapIdentityError: t('wifi.alert.eapIdentity'),
-            }));
-            return;
-        }
-        // 对于WPA2-EAP，在这里可以额外添加用户提示，告知二维码可能无法直接连接
-        // 例如：alert(t('wifi.alert.wpa2eap_qr_warning'));
+      if (settings.password.length < 1) { // 密码不能为空
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          passwordError: t('wifi.alert.password'),
+        }));
+        return;
+      }
+      if (settings.eapIdentity.length < 1) { // EAP 身份不能为空
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          eapIdentityError: t('wifi.alert.eapIdentity'),
+        }));
+        return;
+      }
+      // 变更点 5 (UX 改进): 可以添加用户提示，告知WPA2-EAP二维码的局限性
+      // alert(t('wifi.alert.wpa2eap_qr_warning')); // 示例：一个简单的 alert
     }
 
     document.title = 'WiFi Card - ' + settings.ssid;
@@ -181,9 +188,9 @@ function App() {
     setErrors((prevErrors) => ({ ...prevErrors, passwordError: '' }));
     // 如果选择 'None'，则清空密码
     if (encryptionMode === 'None') {
-        setSettings((prevSettings) => ({ ...prevSettings, encryptionMode, password: '' }));
+      setSettings((prevSettings) => ({ ...prevSettings, encryptionMode, password: '' }));
     } else {
-        setSettings((prevSettings) => ({ ...prevSettings, encryptionMode }));
+      setSettings((prevSettings) => ({ ...prevSettings, encryptionMode }));
     }
   }, []);
 
@@ -214,8 +221,10 @@ function App() {
 
   const onAdditionalCardsChange = useCallback((additionalCardsStr) => {
     const amount = parseInt(additionalCardsStr, 10);
+    // 变更点 6 (小改进): 可以考虑更严格的正则匹配，例如只允许数字
+    // if (!/^\d*$/.test(additionalCardsStr)) { return; }
     if (!isNaN(amount) && amount >= 0) {
-        setSettings((prevSettings) => ({ ...prevSettings, additionalCards: amount }));
+      setSettings((prevSettings) => ({ ...prevSettings, additionalCards: amount }));
     }
   }, []);
 
@@ -223,20 +232,16 @@ function App() {
     setSettings((prevSettings) => ({ ...prevSettings, hideTip }));
   }, []);
 
-  // 移除了 App 组件内部的 onFirstLoad，由 useEffect 统一管理
-  const handleFirstLoadLogic = useCallback(() => {
-    if (firstLoad.current) {
-        html.style.direction = htmlDirection();
-        firstLoad.current = false;
-    }
-  }, [html, htmlDirection]);
+  // 变更点 7: 移除了 handleFirstLoadLogic，将其功能合并到 useEffect 中
+  // const handleFirstLoadLogic = useCallback(() => { ... }, [...]);
+  // 变更点 8: 移除了 settings 组件中的 onFirstLoad props，因为它不再需要
 
   const onSaveImage = useCallback(() => {
     // 确保二维码元素存在且可见
     const qrcodeElement = document.getElementById('qrcode');
     if (!qrcodeElement) {
-        console.error("QR code element not found for saving image.");
-        return;
+      console.error("QR code element not found for saving image.");
+      return;
     }
 
     if (settings.svgImage) {
@@ -303,12 +308,17 @@ function App() {
 
 
   useEffect(() => {
-    // 确保页面方向在首次加载时正确设置
-    handleFirstLoadLogic();
-    // 确保页面方向在语言变化时也正确设置
-    html.style.direction = htmlDirection();
-  }, [html, htmlDirection, handleFirstLoadLogic, i18n.language]); // 添加 i18n.language 依赖
+    // 变更点 9: 在 useEffect 中获取 html 元素并存储到 ref
+    htmlRef.current = document.querySelector('html');
 
+    // 确保页面方向在首次加载时和语言变化时都正确设置
+    if (htmlRef.current) {
+      htmlRef.current.style.direction = htmlDirection();
+    }
+
+    // firstLoad.current 不再需要，因为 useEffect 的依赖数组已经控制了其执行时机
+    // handleFirstLoadLogic 也不再需要
+  }, [htmlDirection, i18n.language]); // 依赖 htmlDirection 和 i18n.language
 
   return (
     <Pane display="flex" flexDirection="column" padding={20}>
@@ -347,8 +357,9 @@ function App() {
 
       <Settings
         settings={settings}
-        firstLoad={firstLoad}
-        onFirstLoad={handleFirstLoadLogic}
+        // 变更点 10: 移除 firstLoad 和 onFirstLoad props
+        // firstLoad={firstLoad}
+        // onFirstLoad={handleFirstLoadLogic}
         onLanguageChange={onChangeLanguage}
         onEncryptionModeChange={onEncryptionModeChange}
         onEapMethodChange={onEapMethodChange}
