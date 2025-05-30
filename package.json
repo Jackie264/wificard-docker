@@ -14,27 +14,24 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-i18next": "^15.5.2",
-    "react-is": "^19.1.0",
-    "react-scripts": "^5.1.0",
-    "ws": "^8.17.1"
+    "react-is": "^19.1.0"
   },
   "devDependencies": {
-    "prettier": "3.3.3",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.3.3",
     "@testing-library/dom": "^10.0.0",
     "typescript": "^5.4.3"
   },
-  "overrides": {
-    "postcss": "8.4.31"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "dev": "vite",
+    "build": "vite build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src/",
     "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx src/",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\""
-  },
+    "preview": "vite preview",
+    "test": "react-scripts test"
+ },
   "eslintConfig": {
     "extends": [
       "react-app",
