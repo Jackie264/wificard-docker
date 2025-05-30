@@ -5,7 +5,8 @@ COPY package.json yarn.lock ./
 RUN yarn install --immutable --no-bin-links
 COPY . .
 
-RUN yarn build 
+RUN npx vite build
+
 FROM nginx:stable-alpine
 COPY --from=builder /app/build /usr/share/nginx/html
 
