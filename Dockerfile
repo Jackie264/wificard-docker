@@ -7,11 +7,6 @@ RUN yarn install --immutable --no-bin-links
 RUN yarn prepare
 COPY . .
 
-# RUN npm install -g npm@11.4.1
-# RUN npm install -g prettier@3.5.3
-# RUN npx prettier --write ./src
-# RUN npm install -g update-browserslist-db@1.1.3
-# RUN npm install -g browserslist@4.25.0
 RUN npx update-browserslist-db@latest
 RUN yarn build 
 
