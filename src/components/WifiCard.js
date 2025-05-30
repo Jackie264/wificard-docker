@@ -11,20 +11,22 @@ import {
 import { QRCodeCanvas, QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import logo from '../../src/images/wifi.png';
+// 变更点 4: 修正图片路径，假设文件结构为 src/components/WifiCard.js 和 src/images/wifi.png
+import logo from '../images/wifi.png';
 import './style.css';
 
 export const WifiCard = (props) => {
   const { t } = useTranslation();
   const [qrvalue, setQrvalue] = useState('');
-  const { settings, buildWifiQrString } = props;
+  // 解构 props，使代码更清晰
+  const { settings, buildWifiQrString, isPrintMode, ssidError, passwordError, eapIdentityError } = props;
 
   useEffect(() => {
     if (buildWifiQrString) {
       const generatedQrValue = buildWifiQrString(settings);
       setQrvalue(generatedQrValue);
     }
-  }, [settings, buildWifiQrString]);
+  }, [settings, buildWifiQrString]); // 依赖项正确
 
   const portraitWidth = () => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -32,30 +34,32 @@ export const WifiCard = (props) => {
   };
 
   const passwordFieldLabel = () => {
-    const hiddenPassword = props.settings.hidePassword || props.settings.encryptionMode === 'None';
+    const hiddenPassword = settings.hidePassword || settings.encryptionMode === 'None';
     return hiddenPassword ? '' : t('wifi.password');
   };
 
   const eapIdentityFieldLabel = () => {
-    return props.settings.encryptionMode !== 'WPA2-EAP' ? '' : t('wifi.identity');
+    return settings.encryptionMode !== 'WPA2-EAP' ? '' : t('wifi.identity');
   };
 
   const eapMethodFieldLabel = () => {
-    return props.settings.encryptionMode !== 'WPA2-EAP' ? '' : t('wifi.encryption.eapMethod');
+    return settings.encryptionMode !== 'WPA2-EAP' ? '' : t('wifi.encryption.eapMethod');
   };
 
   const qrcodeComponent = () => {
-    if (props.settings.svgImage) {
+    // 变更点 1: 根据 isPrintMode 动态设置 id，确保只有主卡片有 'qrcode' ID
+    const qrcodeId = isPrintMode ? undefined : 'qrcode';
+
+    if (settings.svgImage) {
       return (
         <QRCodeSVG
           className="qrcode"
-          id="qrcode"
+          id={qrcodeId} // 只有主卡片有 id="qrcode"
           style={{
-            marginBottom: props.settings.portrait ? '1em' : '0',
+            marginBottom: settings.portrait ? '1em' : '0',
           }}
           value={qrvalue}
           size={150}
-          // viewBox={`0 0 256 256`}
         />
       );
     }
@@ -63,8 +67,8 @@ export const WifiCard = (props) => {
     return (
       <QRCodeCanvas
         className="qrcode"
-        id="qrcode"
-        style={{ marginBottom: props.settings.portrait ? '1em' : '0' }}
+        id={qrcodeId} // 只有主卡片有 id="qrcode"
+        style={{ marginBottom: settings.portrait ? '1em' : '0' }}
         value={qrvalue}
         size={150}
       />
@@ -75,7 +79,7 @@ export const WifiCard = (props) => {
     <Card
       className="card-print"
       elevation={3}
-      style={{ maxWidth: props.settings.portrait ? portraitWidth() : '100%' }}
+      style={{ maxWidth: settings.portrait ? portraitWidth() : '100%' }}
     >
       <Pane display="flex" paddingBottom={12}>
         <img alt="icon" src={logo} width="24" height="24" />
@@ -83,7 +87,7 @@ export const WifiCard = (props) => {
           size={700}
           paddingRight={10}
           paddingLeft={10}
-          textAlign={props.settings.portrait ? 'center' : 'unset'}
+          textAlign={settings.portrait ? 'center' : 'unset'}
         >
           {t('wifi.login')}
         </Heading>
@@ -91,12 +95,13 @@ export const WifiCard = (props) => {
 
       <Pane
         className="details"
-        style={{ flexDirection: props.settings.portrait ? 'column' : 'row' }}
+        style={{ flexDirection: settings.portrait ? 'column' : 'row' }}
       >
         {qrcodeComponent()}
 
         <Pane width={'100%'}>
           <TextareaField
+            // 考虑移除 id 或生成唯一 id，但目前保留以最小化改动
             id="ssid"
             type="text"
             marginBottom={5}
@@ -107,13 +112,15 @@ export const WifiCard = (props) => {
             maxLength="32"
             label={t('wifi.name')}
             placeholder={t('wifi.name.placeholder')}
-            value={props.settings.ssid}
-            onChange={(e) => props.onSSIDChange(e.target.value)}
-            isInvalid={!!props.ssidError}
-            validationMessage={!!props.ssidError && props.ssidError}
-            readOnly={props.isPrintMode} // 在打印模式下只读
+            value={settings.ssid}
+            // 变更点 2: 仅在非打印模式下调用 onChange
+            onChange={!isPrintMode ? (e) => props.onSSIDChange(e.target.value) : undefined}
+            // 变更点 3: 错误仅在输入模式下显示
+            isInvalid={!!ssidError && !isPrintMode}
+            validationMessage={!!ssidError && !isPrintMode ? ssidError : undefined}
+            readOnly={isPrintMode} // 在打印模式下只读
           />
-          {props.settings.encryptionMode === 'WPA2-EAP' && (
+          {settings.encryptionMode === 'WPA2-EAP' && (
             <>
               <TextareaField
                 id="eapmethod"
@@ -122,7 +129,7 @@ export const WifiCard = (props) => {
                 readOnly={true} // 始终只读，因为目前只支持 PWD
                 spellCheck={false}
                 label={eapMethodFieldLabel()}
-                value={props.settings.eapMethod}
+                value={settings.eapMethod}
               />
 
               <TextareaField
@@ -135,17 +142,17 @@ export const WifiCard = (props) => {
                 spellCheck={false}
                 label={eapIdentityFieldLabel()}
                 placeholder={t('wifi.identity.placeholder')}
-                value={props.settings.eapIdentity}
-                onChange={(e) => props.onEapIdentityChange(e.target.value)}
-                isInvalid={!!props.eapIdentityError}
-                validationMessage={
-                  !!props.eapIdentityError && props.eapIdentityError
-                }
-                readOnly={props.isPrintMode} // 在打印模式下只读
+                value={settings.eapIdentity}
+                // 变更点 2: 仅在非打印模式下调用 onChange
+                onChange={!isPrintMode ? (e) => props.onEapIdentityChange(e.target.value) : undefined}
+                // 变更点 3: 错误仅在输入模式下显示
+                isInvalid={!!eapIdentityError && !isPrintMode}
+                validationMessage={!!eapIdentityError && !isPrintMode ? eapIdentityError : undefined}
+                readOnly={isPrintMode} // 在打印模式下只读
               />
             </>
           )}
-          {!(props.settings.hidePassword || props.settings.encryptionMode === 'None') && (
+          {!(settings.hidePassword || settings.encryptionMode === 'None') && (
             <TextareaField
               id="password"
               type="text"
@@ -155,23 +162,25 @@ export const WifiCard = (props) => {
               autoCapitalize="none"
               spellCheck={false}
               height={
-                props.settings.portrait && props.settings.password.length > 40
+                settings.portrait && settings.password.length > 40
                   ? '5em'
                   : 'auto'
               }
               marginBottom={5}
               label={passwordFieldLabel()}
               placeholder={t('wifi.password.placeholder')}
-              value={props.settings.password}
-              onChange={(e) => props.onPasswordChange(e.target.value)}
-              isInvalid={!!props.passwordError}
-              validationMessage={!!props.passwordError && props.passwordError}
-              readOnly={props.isPrintMode} // 在打印模式下只读
+              value={settings.password}
+              // 变更点 2: 仅在非打印模式下调用 onChange
+              onChange={!isPrintMode ? (e) => props.onPasswordChange(e.target.value) : undefined}
+              // 变更点 3: 错误仅在输入模式下显示
+              isInvalid={!!passwordError && !isPrintMode}
+              validationMessage={!!passwordError && !isPrintMode ? passwordError : undefined}
+              readOnly={isPrintMode} // 在打印模式下只读
             />
           )}
         </Pane>
       </Pane>
-      {!props.settings.hideTip && (
+      {!settings.hideTip && (
         <>
           <hr />
           <Paragraph>
