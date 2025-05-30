@@ -19,7 +19,6 @@
     "ws": "^8.17.1"
   },
   "devDependencies": {
-    "husky": "^9.1.7",
     "prettier": "3.2.5",
     "@testing-library/dom": "^10.0.0",
     "typescript": "^5.4.0"
@@ -31,11 +30,16 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "prepare": "husky install"
+    "eject": "react-scripts eject"，
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src/",
+    "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx src/",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\""
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
