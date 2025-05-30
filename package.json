@@ -21,6 +21,9 @@
     "husky": "^9.1.7",
     "prettier": "3.2.5"
   },
+  "overrides": {
+    "postcss": "8.4.31"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
