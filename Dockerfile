@@ -5,6 +5,7 @@ COPY package.json yarn.lock ./
 
 RUN yarn install --immutable --no-bin-links
 RUN yarn prepare
+RUN npx husky install
 COPY . .
 
 RUN npx update-browserslist-db@latest
