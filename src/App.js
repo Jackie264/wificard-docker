@@ -334,7 +334,7 @@ function App() {
 
         <Paragraph marginTop={12}>
           {t('desc.privacy')}{' '}
-          <Link href="https://github.com/Chocobo1/wifi-card-svg" target="_blank" rel="noopener noreferrer">
+          <Link href="https://github.com/Jackie264/wificard-docker" target="_blank" rel="noopener noreferrer">
             {t('desc.source')}
           </Link>
           .
