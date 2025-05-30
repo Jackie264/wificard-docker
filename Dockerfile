@@ -2,10 +2,8 @@ FROM node:22-alpine AS builder
 
 WORKDIR /tmp
 COPY package.json yarn.lock ./
-ENV CI=true HUSKY=0
 
 RUN yarn install --immutable --no-bin-links
-RUN yarn prepare
 COPY . .
 
 RUN npx update-browserslist-db@latest
