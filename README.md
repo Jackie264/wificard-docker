@@ -1,6 +1,6 @@
 # <img width="32px" src="./public/images/wifi.png"> WiFi Card (SVG version)
 
-https://chocobo1.github.io/wifi-card-svg/
+https://github.com/Jackie264/wificard-docker/
 
 This is a fork of [bndw/wifi-card](https://github.com/bndw/wifi-card) project.
 
