@@ -7,6 +7,8 @@ on:
     paths:
       - 'Dockerfile'
       - 'package.json'
+      - 'src/*'
+      - 'public/*'
 
 jobs:
   build-and-push:
