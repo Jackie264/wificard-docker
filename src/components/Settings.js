@@ -5,14 +5,17 @@ import {
   SelectField,
   TextInputField,
 } from 'evergreen-ui';
-import { useEffect } from 'react';
+// 移除了 useEffect 的导入，因为不再需要此组件中的 useEffect
+// import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
 import { Translations } from '../translations';
 import './style.css';
 
 export const Settings = (props) => {
-  console.log('[Settings] firstLoad is', props.firstLoad);
+  // 变更点 1: 移除不再需要的 console.log
+  // console.log('[Settings] firstLoad is', props.firstLoad);
+
   const { t } = useTranslation();
   const encryptionModes = [
     // 明确添加 'None' 选项，表示开放网络
@@ -30,12 +33,16 @@ export const Settings = (props) => {
     return filteredTranslations[0].id;
   };
 
+  // 变更点 2: 移除整个 useEffect 块，因为 App.js 已处理相关逻辑
+  /*
   useEffect(() => {
+    // 这段逻辑应该被移动到 App.js 中进行管理
     if (props.firstLoad?.current && window.innerWidth < 500) {
-      props.onFirstLoad?.(); // 通知 App.js 执行首次加载逻辑 (现在包括设置方向)
+      props.onFirstLoad?.(); // 这将不再被调用
       props.onOrientationChange?.(true); // 默认设置纵向
     }
   }, [props.firstLoad, props.onFirstLoad, props.onOrientationChange]);
+  */
 
   return (
     <Pane id="settings" maxWidth={props.settings.portrait ? '350px' : '100%'}>
@@ -102,7 +109,6 @@ export const Settings = (props) => {
           size={16}
           value={props.settings.eapMethod}
           options={eapMethods}
-          // 移除了 hidden 类名，直接通过条件渲染控制
           onChange={(e) => props.onEapMethodChange(e.target.value)}
         />
       )}
