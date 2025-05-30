@@ -1,4 +1,4 @@
-REPO ?= bndw/wifi-card
+REPO ?= Jackie264/wificard-docker
 GITSHA=$(shell git rev-parse --short HEAD)
 TAG_COMMIT=$(REPO):$(GITSHA)
 TAG_LATEST=$(REPO):latest
@@ -24,7 +24,7 @@ fmt.write:
 
 .PHONY: run
 run:
-	docker run --rm -p 8080:80 $(TAG_LATEST)
+	docker run --rm -p 9076:80 $(TAG_LATEST)
 
 .PHONY: publish
 publish:
