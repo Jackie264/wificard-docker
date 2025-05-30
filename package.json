@@ -43,7 +43,7 @@
     ]
   },
   "main": "index.js",
-  "repository": "git@github.com:bndw/wifi-card.git",
-  "author": "bndw <ben@bdw.to>",
+  "repository": "git@github.com:Jackie264/wifi-card-svg.git",
+  "author": "Jackie264 <ben@bdw.to>",
   "license": "MIT"
 }
