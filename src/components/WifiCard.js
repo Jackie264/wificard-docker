@@ -8,7 +8,6 @@ import {
   Text,
   TextareaField,
 } from 'evergreen-ui';
-// 确保你已经安装了 qrcode.react，它包含 QRCodeCanvas 和 QRCodeSVG
 import { QRCodeCanvas, QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,17 +19,12 @@ export const WifiCard = (props) => {
   const [qrvalue, setQrvalue] = useState('');
   const { settings, buildWifiQrString } = props;
 
-
-  // ** 移除了原有的 escape 函数 **
-  // ** 二维码数据现在通过 props.buildWifiQrString 函数生成 **
   useEffect(() => {
-    // 调用 App.js 传入的 buildWifiQrString 函数来生成二维码数据
-    // 确保 buildWifiQrString 总是可用的，因为它是由父组件传递的
     if (buildWifiQrString) {
       const generatedQrValue = buildWifiQrString(settings);
       setQrvalue(generatedQrValue);
     }
-  }, [settings, buildWifiQrString]); // 依赖 settings 和 buildWifiQrString
+  }, [settings, buildWifiQrString]);
 
   const portraitWidth = () => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -38,18 +32,15 @@ export const WifiCard = (props) => {
   };
 
   const passwordFieldLabel = () => {
-    // 只有在非隐藏密码且有加密模式时才显示密码标签 (None 也视为有加密模式，只是密码为空)
     const hiddenPassword = props.settings.hidePassword || props.settings.encryptionMode === 'None';
     return hiddenPassword ? '' : t('wifi.password');
   };
 
   const eapIdentityFieldLabel = () => {
-    // 只有在 WPA2-EAP 模式下才显示 EAP 身份标签
     return props.settings.encryptionMode !== 'WPA2-EAP' ? '' : t('wifi.identity');
   };
 
   const eapMethodFieldLabel = () => {
-    // 只有在 WPA2-EAP 模式下才显示 EAP 方法标签
     return props.settings.encryptionMode !== 'WPA2-EAP' ? '' : t('wifi.encryption.eapMethod');
   };
 
@@ -58,14 +49,13 @@ export const WifiCard = (props) => {
       return (
         <QRCodeSVG
           className="qrcode"
-          id="qrcode" // 保持 ID，以便 App.js 中的 onSaveImage 函数可以找到它
+          id="qrcode"
           style={{
             marginBottom: props.settings.portrait ? '1em' : '0',
-            // 移除了这里的固定 width: '250px'，让 size 属性控制
           }}
           value={qrvalue}
-          size={150} // 保持固定大小，或者根据需要调整
-          // viewBox={`0 0 256 256`} // 可选：如果遇到渲染问题，可以尝试添加 viewBox
+          size={150}
+          // viewBox={`0 0 256 256`}
         />
       );
     }
@@ -73,10 +63,10 @@ export const WifiCard = (props) => {
     return (
       <QRCodeCanvas
         className="qrcode"
-        id="qrcode" // 保持 ID，以便 App.js 中的 onSaveImage 函数可以找到它
+        id="qrcode"
         style={{ marginBottom: props.settings.portrait ? '1em' : '0' }}
         value={qrvalue}
-        size={150} // 保持固定大小，或者根据需要调整
+        size={150}
       />
     );
   };
@@ -103,7 +93,6 @@ export const WifiCard = (props) => {
         className="details"
         style={{ flexDirection: props.settings.portrait ? 'column' : 'row' }}
       >
-        {/* 调用渲染函数来显示二维码 */}
         {qrcodeComponent()}
 
         <Pane width={'100%'}>
@@ -156,7 +145,6 @@ export const WifiCard = (props) => {
               />
             </>
           )}
-          {/* 密码字段的显示条件 */}
           {!(props.settings.hidePassword || props.settings.encryptionMode === 'None') && (
             <TextareaField
               id="password"
