@@ -90,6 +90,15 @@ export const WifiCard = (props) => {
         </Heading>
       </Pane>
 
+      <Pane width="100%" textAlign="center" marginBottom={10} paddingTop={5}>
+        <Paragraph color="red600" fontWeight="bold" fontSize={isPrintMode ? 12 : 14}>
+          {t('warning.wechat_scan_prohibited')}
+        </Paragraph>
+        <Paragraph color="red600" fontSize={isPrintMode ? 10 : 12} marginTop={3}>
+          {t('warning.use_system_camera')}
+        </Paragraph>
+      </Pane>
+
       <Pane
         className="details"
         style={{ flexDirection: settings.portrait ? 'column' : 'row' }}
