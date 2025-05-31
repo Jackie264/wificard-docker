@@ -170,7 +170,7 @@ export const Translations = [
       'button.saveImage': '保存二维码图片',
       select: '选择语言',
       'warning.wechat_scan_prohibited': '注意: 不要使用微信扫描二维码.',
-      'warning.use_system_camera': '请使用手机的系统相机扫码以获得自动连接'
+      'warning.use_system_camera': '请使用手机的系统相机扫码以获得自动连接',
     },
   },
   {
@@ -206,7 +206,7 @@ export const Translations = [
       'button.saveImage': '儲存 QR Code 圖片',
       select: '選擇語言',
       'warning.wechat_scan_prohibited': '注意: 不要使用微信進行掃碼.',
-      'warning.use_system_camera': '請使用手機的系統相機以獲得自動連接'
+      'warning.use_system_camera': '請使用手機的系統相機以獲得自動連接',
     },
   },
   {
@@ -245,7 +245,7 @@ export const Translations = [
       'button.saveImage': '储存 QR Code 图片',
       select: '选择语言',
       'warning.wechat_scan_prohibited': '注意：唔好用微信扫码.',
-      'warning.use_system_camera': '请用手机嘅系统相机嚟自动连接'
+      'warning.use_system_camera': '请用手机嘅系统相机嚟自动连接',
     },
   },
   {
@@ -281,7 +281,7 @@ export const Translations = [
       'button.saveImage': '存檔 QR Code 圖片',
       select: '選擇語言',
       'warning.wechat_scan_prohibited': '注意: 不要使用微信進行掃碼.',
-      'warning.use_system_camera': '請使用手機的系統相機以獲得自動連接'
+      'warning.use_system_camera': '請使用手機的系統相機以獲得自動連接',
     },
   },
   {
@@ -374,6 +374,8 @@ export const Translations = [
       'button.rotate': '回転する',
       'button.print': '印刷する',
       select: '言語を選択',
+      'warning.wechat_scan_prohibited': '注意：WeChatでのスキャンは避けてください',
+      'warning.use_system_camera': '自動接続には、スマートフォンの標準カメラをご利用ください',
     },
   },
   {
