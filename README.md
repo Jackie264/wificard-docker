@@ -4,7 +4,7 @@
 This is a fork of [bndw/wifi-card](https://github.com/bndw/wifi-card) project.
 
 
-## Introduction
+## Introduction [中文](https://github.com/Jackie264/wificard-docker/blob/master/README_CN.md)
 This project is a tool for generating Wi-Fi connection QR codes, making it easy to share Wi-Fi credentials.
 
 ---
