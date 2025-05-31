@@ -190,7 +190,7 @@ export const Translations = [
       'wifi.password.hide': '隐藏密码',
       'wifi.password.encryption': '加密',
       'wifi.password.encryption.none': '無',
-      'wifi.tip': '打開相機指住嗰QR Code就可以連接 WiFi',
+      'wifi.tip': '打開相機指住嗰QR Code就可以連接',
       'wifi.alert.name': '唔可以留空網絡名稱',
       'wifi.alert.password.length.5':
         '密碼必須至少有 5 个字串，你亦都可以将加密方式更改为“無”',
@@ -227,7 +227,7 @@ export const Translations = [
       'wifi.password.encryption': '加密',
       'wifi.password.encryption.none': '冇',
       'wifi.encryption.eapMethod': 'EAP 加密方式',
-      'wifi.tip': '打开摄像头指住个二维码就可以连上呢个 Wi-Fi',
+      'wifi.tip': '打开摄像头指住个二维码就可以连接',
       'wifi.alert.name': '网络名称唔可以为空',
       'wifi.alert.password.length.5':
         '密码必须至少有 5 个字符，你亦可以将加密方式更改为“冇”',
@@ -261,7 +261,7 @@ export const Translations = [
       'wifi.password.hide': '隱藏密碼',
       'wifi.password.encryption': '加密',
       'wifi.password.encryption.none': '無',
-      'wifi.tip': '將手機相機對準 QR Code 即可自動連接 WiFi',
+      'wifi.tip': '將相機對準QR Code即可自動連接',
       'wifi.alert.name': '網路名稱不可以留空',
       'wifi.alert.password.length.5':
         '密碼至少為 5 個字元以上，或將加密改為"無"',
