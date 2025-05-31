@@ -284,7 +284,16 @@ function App() {
           {t('title')}
         </Heading>
       </Pane>
-
+      
+      <Pane background="redTint" padding={16} borderRadius={5} marginBottom={20}>
+        <Paragraph color="red600" fontWeight="bold">
+          {t('warning.wechat_scan_prohibited')}
+        </Paragraph>
+        <Paragraph color="red600" marginTop={5}>
+          {t('warning.use_system_camera')}
+        </Paragraph>
+      </Pane>
+      
       <Pane marginBottom={20}>
         <Paragraph marginTop={12}>{t('desc.use')}</Paragraph>
 
