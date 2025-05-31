@@ -5,10 +5,7 @@ WORKDIR /app
 
 COPY package.json yarn.lock ./
 
-# 移除 --no-bin-links 选项，允许 Yarn 创建二进制链接
-RUN yarn install --immutable # <--- 关键修改点
-
-# --- DEBUGGING STEPS (保持，但这次它们应该能通过) ---
+RUN yarn install --immutable
 
 # Debug 1: Confirm yarn install ran successfully (check if node_modules exists)
 RUN ls -la node_modules/
@@ -29,9 +26,8 @@ RUN /app/node_modules/.bin/vite --version || echo "Vite not directly executable 
 
 COPY . .
 
-# 重新启用正常的构建命令
-# 现在 node_modules/.bin/ 应该存在，并且 vite 应该能被找到
-RUN yarn run build # 或者 RUN PATH=$(yarn bin):$PATH vite build
+RUN yarn run build
+# 或者 RUN PATH=$(yarn bin):$PATH vite build
 
 # Stage 2: Production
 FROM nginx:stable-alpine
