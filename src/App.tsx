@@ -74,6 +74,8 @@ function App() {
     } else if (encryptionMode === 'WPA2-EAP') {
       encryptionType = 'WPA';
       passwordField = `P:${escapedPassword};`;
+      qrData += `E:${currentSettings.eapMethod};`;
+      qrData += `I:${escapeSpecialChars(currentSettings.eapIdentity)};`;
     }
 
     qrData += `T:${encryptionType};`;
