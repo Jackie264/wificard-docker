@@ -11,14 +11,12 @@ import {
 import { QRCodeCanvas, QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-// 变更点 4: 修正图片路径，假设文件结构为 src/components/WifiCard.js 和 src/images/wifi.png
 import logo from '../images/wifi.png';
 import './style.css';
 
 export const WifiCard = (props) => {
   const { t } = useTranslation();
   const [qrvalue, setQrvalue] = useState('');
-  // 解构 props，使代码更清晰
   const { settings, buildWifiQrString, isPrintMode, ssidError, passwordError, eapIdentityError } = props;
 
   useEffect(() => {
@@ -26,7 +24,7 @@ export const WifiCard = (props) => {
       const generatedQrValue = buildWifiQrString(settings);
       setQrvalue(generatedQrValue);
     }
-  }, [settings, buildWifiQrString]); // 依赖项正确
+  }, [settings, buildWifiQrString]);
 
   const portraitWidth = () => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -47,14 +45,13 @@ export const WifiCard = (props) => {
   };
 
   const qrcodeComponent = () => {
-    // 变更点 1: 根据 isPrintMode 动态设置 id，确保只有主卡片有 'qrcode' ID
     const qrcodeId = isPrintMode ? undefined : 'qrcode';
 
     if (settings.svgImage) {
       return (
         <QRCodeSVG
           className="qrcode"
-          id={qrcodeId} // 只有主卡片有 id="qrcode"
+          id={qrcodeId}
           style={{
             marginBottom: settings.portrait ? '1em' : '0',
           }}
@@ -67,7 +64,7 @@ export const WifiCard = (props) => {
     return (
       <QRCodeCanvas
         className="qrcode"
-        id={qrcodeId} // 只有主卡片有 id="qrcode"
+        id={qrcodeId}
         style={{ marginBottom: settings.portrait ? '1em' : '0' }}
         value={qrvalue}
         size={150}
@@ -101,7 +98,6 @@ export const WifiCard = (props) => {
 
         <Pane width={'100%'}>
           <TextareaField
-            // 考虑移除 id 或生成唯一 id，但目前保留以最小化改动
             id="ssid"
             type="text"
             marginBottom={5}
@@ -113,12 +109,10 @@ export const WifiCard = (props) => {
             label={t('wifi.name')}
             placeholder={t('wifi.name.placeholder')}
             value={settings.ssid}
-            // 变更点 2: 仅在非打印模式下调用 onChange
             onChange={!isPrintMode ? (e) => props.onSSIDChange(e.target.value) : undefined}
-            // 变更点 3: 错误仅在输入模式下显示
             isInvalid={!!ssidError && !isPrintMode}
             validationMessage={!!ssidError && !isPrintMode ? ssidError : undefined}
-            readOnly={isPrintMode} // 在打印模式下只读
+            readOnly={isPrintMode}
           />
           {settings.encryptionMode === 'WPA2-EAP' && (
             <>
@@ -126,7 +120,7 @@ export const WifiCard = (props) => {
                 id="eapmethod"
                 type="text"
                 marginBottom={5}
-                readOnly={true} // 始终只读，因为目前只支持 PWD
+                readOnly={true}
                 spellCheck={false}
                 label={eapMethodFieldLabel()}
                 value={settings.eapMethod}
@@ -143,12 +137,10 @@ export const WifiCard = (props) => {
                 label={eapIdentityFieldLabel()}
                 placeholder={t('wifi.identity.placeholder')}
                 value={settings.eapIdentity}
-                // 变更点 2: 仅在非打印模式下调用 onChange
                 onChange={!isPrintMode ? (e) => props.onEapIdentityChange(e.target.value) : undefined}
-                // 变更点 3: 错误仅在输入模式下显示
                 isInvalid={!!eapIdentityError && !isPrintMode}
                 validationMessage={!!eapIdentityError && !isPrintMode ? eapIdentityError : undefined}
-                readOnly={isPrintMode} // 在打印模式下只读
+                readOnly={isPrintMode}
               />
             </>
           )}
@@ -170,12 +162,10 @@ export const WifiCard = (props) => {
               label={passwordFieldLabel()}
               placeholder={t('wifi.password.placeholder')}
               value={settings.password}
-              // 变更点 2: 仅在非打印模式下调用 onChange
               onChange={!isPrintMode ? (e) => props.onPasswordChange(e.target.value) : undefined}
-              // 变更点 3: 错误仅在输入模式下显示
               isInvalid={!!passwordError && !isPrintMode}
               validationMessage={!!passwordError && !isPrintMode ? passwordError : undefined}
-              readOnly={isPrintMode} // 在打印模式下只读
+              readOnly={isPrintMode}
             />
           )}
         </Pane>
