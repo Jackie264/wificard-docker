@@ -8,11 +8,9 @@ import './style.css';
 import { Translations } from './translations';
 
 function App() {
-  // 变更点 1: 使用 useRef 来存储 html 元素的引用，避免在组件顶层直接访问 document
   const htmlRef = useRef(null);
 
   const { t, i18n } = useTranslation();
-  // 变更点 2: 移除 firstLoad useRef，因为其逻辑可以被 useEffect 更好地管理
   // const firstLoad = useRef(true);
 
   const [settings, setSettings] = useState({
@@ -21,10 +19,9 @@ function App() {
     // Network password
     password: '',
     // Settings: Network encryption mode
-    // 新增 'None' 选项，表示开放网络
     encryptionMode: 'WPA',
     // Settings: EAP Method
-    eapMethod: 'PWD', // 默认 PWD
+    eapMethod: 'PWD',
     // Settings: EAP identity
     eapIdentity: '',
     // Settings: Hide password on the printed card
@@ -38,7 +35,7 @@ function App() {
     // Settings: Show tip (legend) on card
     hideTip: false,
     // Settings: Show QR code in svg format
-    svgImage: true, // 保持用户选择的SVG或Canvas模式
+    svgImage: true,
   });
   const [errors, setErrors] = useState({
     ssidError: '',
@@ -46,28 +43,15 @@ function App() {
     eapIdentityError: '',
   });
 
-  // --- 二维码数据构建与特殊字符转义函数 ---
-  /**
-   * 转义WiFi SSID或密码中的特殊字符，以符合ZXing WiFi二维码标准。
-   * 特殊字符包括：\ (反斜杠), ; (分号), : (冒号), , (逗号), " (双引号)
-   * @param {string} str 需要转义的字符串
-   * @returns {string} 转义后的字符串
-   */
   const escapeSpecialChars = useCallback((str) => {
     if (!str) return '';
-    return str.replace(/\\/g, '\\\\') // 转义反斜杠
-      .replace(/;/g, '\\;')  // 转义分号
-      .replace(/:/g, '\\:')  // 转义冒号
-      .replace(/,/g, '\\,')  // 转义逗号
-      .replace(/"/g, '\\"'); // 转义双引号
-  }, []); // 依赖为空，函数只创建一次
+    return str.replace(/\\/g, '\\\\')
+      .replace(/;/g, '\\;')
+      .replace(/:/g, '\\:')
+      .replace(/,/g, '\\,')
+      .replace(/"/g, '\\"');
+  }, []);
 
-  /**
-   * 根据WiFi设置构建标准WiFi二维码字符串。
-   * 格式: WIFI:S:<SSID>;T:<encryption>;P:<password>;H:<hidden>;;
-   * @param {object} currentSettings 当前WiFi设置对象
-   * @returns {string} 适用于二维码的WiFi字符串
-   */
   const buildWifiQrString = useCallback((currentSettings) => {
     const { ssid, password, encryptionMode, hiddenSSID } = currentSettings;
 
@@ -78,21 +62,16 @@ function App() {
     let encryptionType = '';
     let passwordField = '';
 
-    // 处理加密类型和密码
     if (encryptionMode === 'WPA') {
       encryptionType = 'WPA';
       passwordField = `P:${escapedPassword};`;
     } else if (encryptionMode === 'WEP') {
       encryptionType = 'WEP';
       passwordField = `P:${escapedPassword};`;
-    } else if (encryptionMode === 'None') { // 开放网络
+    } else if (encryptionMode === 'None') {
       encryptionType = 'nopass';
-      passwordField = ''; // 开放网络没有密码字段
+      passwordField = '';
     } else if (encryptionMode === 'WPA2-EAP') {
-      // WPA2-EAP 是一种企业级加密，标准WiFi二维码格式不支持其详细配置（如EAP方法和身份）。
-      // 微信和iOS相机通常只支持个人版（WPA/WEP/nopass）。
-      // 这里将其映射为 'WPA' 类型并包含密码。
-      // 请注意：这种编码方式无法让扫码应用自动配置EAP认证信息，可能需要用户手动设置。
       encryptionType = 'WPA';
       passwordField = `P:${escapedPassword};`;
     }
@@ -100,17 +79,14 @@ function App() {
     qrData += `T:${encryptionType};`;
     qrData += passwordField;
 
-    // 处理隐藏SSID
     if (hiddenSSID) {
       qrData += `H:true;`;
     }
 
-    qrData += `;;`; // 确保以双分号结尾，这是标准格式的强制要求
+    qrData += `;;`;
 
     return qrData;
-  }, [escapeSpecialChars]); // 依赖 escapeSpecialChars
-  // --- 二维码数据构建与特殊字符转义函数结束 ---
-
+  }, [escapeSpecialChars]);
 
   const htmlDirection = useCallback((languageID) => {
     languageID = languageID || i18n.language;
@@ -119,15 +95,13 @@ function App() {
   }, [i18n.language]);
 
   const onChangeLanguage = useCallback((language) => {
-    // 变更点 3: 使用 htmlRef.current 访问 DOM
     if (htmlRef.current) {
       htmlRef.current.style.direction = htmlDirection(language);
     }
     i18n.changeLanguage(language);
-  }, [htmlDirection, i18n]); // 变更点 4: 移除 html 作为依赖
+  }, [htmlDirection, i18n]);
 
   const onPrint = useCallback(() => {
-    // 打印前再次检查输入有效性
     if (!settings.ssid.length) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -135,7 +109,6 @@ function App() {
       }));
       return;
     }
-    // 密码长度验证
     if (settings.encryptionMode === 'WPA' && settings.password.length < 8) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -150,24 +123,21 @@ function App() {
       }));
       return;
     }
-    // WPA2-EAP 的密码和身份验证
     if (settings.encryptionMode === 'WPA2-EAP') {
-      if (settings.password.length < 1) { // 密码不能为空
+      if (settings.password.length < 1) {
         setErrors((prevErrors) => ({
           ...prevErrors,
           passwordError: t('wifi.alert.password'),
         }));
         return;
       }
-      if (settings.eapIdentity.length < 1) { // EAP 身份不能为空
+      if (settings.eapIdentity.length < 1) { //
         setErrors((prevErrors) => ({
           ...prevErrors,
           eapIdentityError: t('wifi.alert.eapIdentity'),
         }));
         return;
       }
-      // 变更点 5 (UX 改进): 可以添加用户提示，告知WPA2-EAP二维码的局限性
-      // alert(t('wifi.alert.wpa2eap_qr_warning')); // 示例：一个简单的 alert
     }
 
     document.title = 'WiFi Card - ' + settings.ssid;
@@ -186,7 +156,6 @@ function App() {
 
   const onEncryptionModeChange = useCallback((encryptionMode) => {
     setErrors((prevErrors) => ({ ...prevErrors, passwordError: '' }));
-    // 如果选择 'None'，则清空密码
     if (encryptionMode === 'None') {
       setSettings((prevSettings) => ({ ...prevSettings, encryptionMode, password: '' }));
     } else {
@@ -221,7 +190,6 @@ function App() {
 
   const onAdditionalCardsChange = useCallback((additionalCardsStr) => {
     const amount = parseInt(additionalCardsStr, 10);
-    // 变更点 6 (小改进): 可以考虑更严格的正则匹配，例如只允许数字
     // if (!/^\d*$/.test(additionalCardsStr)) { return; }
     if (!isNaN(amount) && amount >= 0) {
       setSettings((prevSettings) => ({ ...prevSettings, additionalCards: amount }));
@@ -232,12 +200,7 @@ function App() {
     setSettings((prevSettings) => ({ ...prevSettings, hideTip }));
   }, []);
 
-  // 变更点 7: 移除了 handleFirstLoadLogic，将其功能合并到 useEffect 中
-  // const handleFirstLoadLogic = useCallback(() => { ... }, [...]);
-  // 变更点 8: 移除了 settings 组件中的 onFirstLoad props，因为它不再需要
-
   const onSaveImage = useCallback(() => {
-    // 确保二维码元素存在且可见
     const qrcodeElement = document.getElementById('qrcode');
     if (!qrcodeElement) {
       console.error("QR code element not found for saving image.");
@@ -245,15 +208,12 @@ function App() {
     }
 
     if (settings.svgImage) {
-      // 从 SVG 元素中获取内容并下载
-      const svg = qrcodeElement.cloneNode(true); // 克隆 SVG 元素
-      // 移除可能影响下载的样式或ID
+      const svg = qrcodeElement.cloneNode(true);
       svg.style = null;
       svg.removeAttribute('class');
       svg.removeAttribute('id');
 
       let svgSource = new XMLSerializer().serializeToString(svg);
-      // 确保 SVG 头部有 xmlns 属性，防止某些浏览器下载后无法正确显示
       if (
         !svgSource.match(/^<svg[^>]+xmlns="http:\/\/www\.w3\.org\/2000\/svg"/)
       ) {
@@ -270,18 +230,16 @@ function App() {
 
       const downloadLink = document.createElement('a');
       downloadLink.href = svgUrl;
-      downloadLink.download = `${settings.ssid || 'wifi-qrcode'}.svg`; // 默认文件名
+      downloadLink.download = `${settings.ssid || 'wifi-qrcode'}.svg`;
 
       document.body.appendChild(downloadLink);
       downloadLink.click();
       document.body.removeChild(downloadLink);
 
-      URL.revokeObjectURL(svgUrl); // 释放 URL 对象
+      URL.revokeObjectURL(svgUrl);
       return;
     }
 
-    // 处理 Canvas 下载
-    // 确保 qrcodeElement 是一个 canvas 元素
     if (qrcodeElement.tagName.toLowerCase() !== 'canvas') {
       console.error("QR code element is not a canvas when trying to save as PNG.");
       return;
@@ -293,13 +251,13 @@ function App() {
 
         const downloadLink = document.createElement('a');
         downloadLink.href = url;
-        downloadLink.download = `${settings.ssid || 'wifi-qrcode'}.png`; // 默认文件名
+        downloadLink.download = `${settings.ssid || 'wifi-qrcode'}.png`;
 
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
 
-        URL.revokeObjectURL(url); // 释放 URL 对象
+        URL.revokeObjectURL(url);
       } else {
         console.error("Failed to create blob from canvas.");
       }
@@ -308,17 +266,13 @@ function App() {
 
 
   useEffect(() => {
-    // 变更点 9: 在 useEffect 中获取 html 元素并存储到 ref
     htmlRef.current = document.querySelector('html');
 
-    // 确保页面方向在首次加载时和语言变化时都正确设置
     if (htmlRef.current) {
       htmlRef.current.style.direction = htmlDirection();
     }
 
-    // firstLoad.current 不再需要，因为 useEffect 的依赖数组已经控制了其执行时机
-    // handleFirstLoadLogic 也不再需要
-  }, [htmlDirection, i18n.language]); // 依赖 htmlDirection 和 i18n.language
+  }, [htmlDirection, i18n.language]);
 
   return (
     <Pane display="flex" flexDirection="column" padding={20}>
@@ -357,9 +311,6 @@ function App() {
 
       <Settings
         settings={settings}
-        // 变更点 10: 移除 firstLoad 和 onFirstLoad props
-        // firstLoad={firstLoad}
-        // onFirstLoad={handleFirstLoadLogic}
         onLanguageChange={onChangeLanguage}
         onEncryptionModeChange={onEncryptionModeChange}
         onEapMethodChange={onEapMethodChange}
@@ -376,7 +327,7 @@ function App() {
         appearance="primary"
         height={40}
         marginRight={16}
-        marginTop={20} // 增加按钮上边距
+        marginTop={20}
         onClick={onPrint}
       >
         {t('button.print')}
@@ -386,7 +337,7 @@ function App() {
         appearance="primary"
         height={40}
         marginRight={16}
-        marginTop={20} // 增加按钮上边距
+        marginTop={20}
         onClick={onSaveImage}
       >
         {t('button.saveImage')}
@@ -397,10 +348,8 @@ function App() {
             <WifiCard
               key={`card-nr-${idx}`}
               settings={settings}
-              // 打印区域的卡片不需要显示错误或接收 onChange 事件
-              // 但它们仍需要 buildWifiQrString 来生成二维码
               buildWifiQrString={buildWifiQrString}
-              isPrintMode={true} // 可以添加此 prop 以便 WifiCard 在打印模式下调整样式或行为
+              isPrintMode={true}
             />
           ))}
       </Pane>
