@@ -1,4 +1,6 @@
-# WiFi Card 生成器 (Docker版)
+# <img width="32px" src="./public/images/wifi.png"> WiFi Card 生成器 (Docker版)
+
+This is a fork of [bndw/wifi-card](https://github.com/bndw/wifi-card) project.
 
 ## 简介
 这个项目是一个用于生成 Wi-Fi 连接二维码的工具，方便分享 Wi-Fi 凭证。
