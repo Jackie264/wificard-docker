@@ -10,8 +10,8 @@ on:
     paths:
       - 'Dockerfile'
       - 'package.json'
-      - 'src/*'
-      - 'public/*'
+      - 'src/**'
+      - 'public/**'
       - 'index.html'
       - 'vite.config.mjs'
 
