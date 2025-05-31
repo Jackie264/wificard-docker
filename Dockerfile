@@ -21,7 +21,6 @@ RUN echo "Yarn bin path: $(yarn bin)"
 
 # Debug 5: Attempt to run vite using its *absolute path* to confirm it's executable
 RUN /app/node_modules/.bin/vite --version || echo "Vite not directly executable at absolute path"
-
 # --- DEBUGGING STEPS END HERE ---
 
 COPY . .
