@@ -6,6 +6,18 @@
     <title>WiFi Card</title> </head>
   <body>
     <div id="root"></div>
+    <noscript>You need to enable JavaScript to run this app. Feel free to view the
+    <a href="https://github.com/Jackie264/wificard-docker">source code</a>.</noscript>
     <script type="module" src="/src/index.tsx"></script>
+    <script>
+    // Internet Explorer 6-11
+    const isIE = /*@cc_on!@*/ false || !!document.documentMode;
+
+    if (isIE) {
+      document.getElementById('root').innerHTML =
+        'Internet Explorer is not supported. Download Edge/Firefox/Chrome/Safari.';
+      document.body.style.fontSize = '50px';
+    }
+  </script>
   </body>
 </html>
