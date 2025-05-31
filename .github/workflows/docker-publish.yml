@@ -9,6 +9,8 @@ on:
       - 'package.json'
       - 'src/*'
       - 'public/*'
+      - 'index.html'
+      - 'vite.config.mjs'
 
 jobs:
   build-and-push:
