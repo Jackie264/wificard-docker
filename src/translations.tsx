@@ -37,6 +37,8 @@ export const Translations = [
       'button.svg': 'Show QR code in SVG format',
       'button.saveImage': 'Save QR code image',
       select: 'Select Language',
+      'warning.wechat_scan_prohibited': 'Caution: Do not use WeChat to scan the QR code.',
+      'warning.use_system_camera': 'Please use your phone\'s built-in camera (iOS) or Google Lens / system scanner (Android) to scan for direct Wi-Fi connection.',
     },
   },
   {
@@ -167,6 +169,8 @@ export const Translations = [
       'button.svg': '以SVG格式显示二维码',
       'button.saveImage': '保存二维码图片',
       select: '选择语言',
+      'warning.wechat_scan_prohibited': '注意: 不要使用微信扫描二维码.',
+      'warning.use_system_camera': '请使用手机的系统相机扫码以获得自动连接',
     },
   },
   {
@@ -200,7 +204,9 @@ export const Translations = [
       'button.print': '打印',
       'button.svg': '用 SVG 嚟顯示個 QR Code',
       'button.saveImage': '儲存 QR Code 圖片',
-     select: '選擇語言',
+      select: '選擇語言',
+      'warning.wechat_scan_prohibited': '注意: 不要使用微信進行掃碼.',
+      'warning.use_system_camera': '請使用手機的系統相機以獲得自動連接',
     },
   },
   {
@@ -237,7 +243,9 @@ export const Translations = [
       'button.print': '打印',
       'button.svg': '用 SVG 格式显示 QR Code',
       'button.saveImage': '储存 QR Code 图片',
-     select: '选择语言',
+      select: '选择语言',
+      'warning.wechat_scan_prohibited': '注意：唔好用微信扫码.',
+      'warning.use_system_camera': '请用手机嘅系统相机嚟自动连接',
     },
   },
   {
@@ -271,7 +279,9 @@ export const Translations = [
       'button.print': '列印',
       'button.svg': '以 SVG 格式顯示二維條碼',
       'button.saveImage': '存檔 QR Code 圖片',
-     select: '選擇語言',
+      select: '選擇語言',
+      'warning.wechat_scan_prohibited': '注意: 不要使用微信進行掃碼.',
+      'warning.use_system_camera': '請使用手機的系統相機以獲得自動連接',
     },
   },
   {
@@ -364,6 +374,8 @@ export const Translations = [
       'button.rotate': '回転する',
       'button.print': '印刷する',
       select: '言語を選択',
+      'warning.wechat_scan_prohibited': '注意：WeChatでのスキャンは避けてください',
+      'warning.use_system_camera': '自動接続には、スマートフォンの標準カメラをご利用ください',
     },
   },
   {
