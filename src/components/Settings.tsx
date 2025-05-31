@@ -43,7 +43,6 @@ export const Settings = (props) => {
           </option>
         ))}
       </SelectField>
-
       <Checkbox
         label={t('button.rotate')}
         checked={props.settings.portrait}
@@ -66,7 +65,6 @@ export const Settings = (props) => {
         checked={props.settings.hiddenSSID}
         onChange={() => props.onHiddenSSIDChange(!props.settings.hiddenSSID)}
       />
-
       <Checkbox
         label={t('cards.tip.hide')}
         checked={props.settings.hideTip}
