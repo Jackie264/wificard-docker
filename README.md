@@ -11,12 +11,12 @@ This project is a tool for generating Wi-Fi connection QR codes, making it easy 
 
 ## **Major Updates and Tech Stack Upgrade**
 
-In recent development iterations, we have comprehensively upgraded and optimized the project's underlying tech stack and build/deployment processes. The aim is to enhance development efficiency, build speed, and deployment stability and security.
+In recent development iterations, I have comprehensively upgraded and optimized the project's underlying tech stack and build/deployment processes. The aim is to enhance development efficiency, build speed, and deployment stability and security.
 
 **Key highlights include:**
 
 1.  **Migration from Create React App (CRA) to Vite:**
-    * **Reason:** The `create-react-app` project has entered maintenance mode with reduced active development. To embrace more modern frontend build tools and gain faster development experience and production build speeds, we opted to migrate to Vite.
+    * **Reason:** The `create-react-app` project has entered maintenance mode with reduced active development. To embrace more modern frontend build tools and gain faster development experience and production build speeds, I opted to migrate to Vite.
     * **Improvements:** Vite offers incredibly fast development server startup and Hot Module Replacement (HMR), significantly boosting development efficiency. Its ES Modules-based build approach also leads to more efficient production bundling.
     * **Implementation:** Detailed adjustments were made to dependencies and scripts in `package.json`, `vite.config.mjs` was introduced for Vite-specific configurations, and `index.html` was updated to accommodate Vite's entry file loading mechanism.
 
