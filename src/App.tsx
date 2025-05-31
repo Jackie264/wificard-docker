@@ -62,7 +62,7 @@ function App() {
     let encryptionType = '';
     let passwordField = '';
 
-    if (encryptionMode === 'WPA') {
+    if (encryptionMode === 'WPA' || encryptionMode === 'WPA3') {
       encryptionType = 'WPA';
       passwordField = `P:${escapedPassword};`;
     } else if (encryptionMode === 'WEP') {
@@ -74,6 +74,8 @@ function App() {
     } else if (encryptionMode === 'WPA2-EAP') {
       encryptionType = 'WPA';
       passwordField = `P:${escapedPassword};`;
+      qrData += `E:${currentSettings.eapMethod};`;
+      qrData += `I:${escapeSpecialChars(currentSettings.eapIdentity)};`;
     }
 
     qrData += `T:${encryptionType};`;
