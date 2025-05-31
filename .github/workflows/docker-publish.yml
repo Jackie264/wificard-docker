@@ -1,4 +1,7 @@
 name: 🚀 Build & Push Docker Image
+permissions:
+  contents: read
+  packages: write
 
 on:
   push:
