@@ -62,7 +62,7 @@ function App() {
     let encryptionType = '';
     let passwordField = '';
 
-    if (encryptionMode === 'WPA') {
+    if (encryptionMode === 'WPA' || encryptionMode === 'WPA3') {
       encryptionType = 'WPA';
       passwordField = `P:${escapedPassword};`;
     } else if (encryptionMode === 'WEP') {
