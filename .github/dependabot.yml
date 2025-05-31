@@ -1,0 +1,19 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # npm 生态系统适用于 JavaScript/Node.js 项目
+  # 它可以识别 package.json 和 yarn.lock 文件
+  - package-ecosystem: "npm"
+    # package.json 和 yarn.lock 文件位于仓库的根目录
+    directory: "/"
+    # 更新检查的频率，这里设置为每周检查一次
+    schedule:
+      interval: "weekly"
+    # 可选：如果希望 Dependabot 也能检查开发依赖的更新，可以添加以下行
+    # target-branch: "main" # 或者你的主分支名称，例如 "master"
+    # allow:
+    #   - dependency-type: "development" # 允许开发依赖的更新
