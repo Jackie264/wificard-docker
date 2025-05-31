@@ -1,4 +1,5 @@
 import {
+  BanCircleIcon,
   CameraIcon,
   Card,
   Heading,
@@ -90,11 +91,13 @@ export const WifiCard = (props) => {
         </Heading>
       </Pane>
 
-      <Pane width="100%" textAlign="center" marginBottom={10} paddingTop={5}>
+      <Pane width="100%" textAlign="left" marginBottom={10} paddingTop={5}>
         <Paragraph color="red600" fontWeight="bold" fontSize={isPrintMode ? 12 : 14}>
+          <BanCircleIcon size={isPrintMode ? 14 : 16} marginRight={5} />
           {t('warning.wechat_scan_prohibited')}
         </Paragraph>
         <Paragraph color="red600" fontSize={isPrintMode ? 10 : 12} marginTop={3}>
+          <MobilePhoneIcon size={isPrintMode ? 14 : 16} marginRight={5} />
           {t('warning.use_system_camera')}
         </Paragraph>
       </Pane>
@@ -184,7 +187,6 @@ export const WifiCard = (props) => {
           <hr />
           <Paragraph>
             <CameraIcon />
-            <MobilePhoneIcon />
             <Text size={300} paddingRight={8} paddingLeft={8}>
               {t('wifi.tip')}
             </Text>
