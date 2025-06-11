@@ -60,29 +60,53 @@ button {
   margin-right: 8px;
 }
 
+/* ------------------------------------------------ */
+/* 以下是用于控制打印显示的新增或修改的 CSS 规则 */
+/* ------------------------------------------------ */
+
 @media print {
-  body * {
-    visibility: hidden;
+  /* 打印时，隐藏所有屏幕上可见的交互内容 */
+  #screen-content { /* 这个ID是在 App.tsx 中新加的容器 */
+    display: none !important;
   }
-  #print-area,
-  #print-area * {
-    visibility: visible;
-  }
+
+  /* 打印时，显示 #print-area 并调整其布局 */
   #print-area {
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: flex;
+    display: flex !important; /* 确保打印区域可见并以 flex 布局 */
+    position: static; /* 移除绝对定位，让它在文档流中正常布局 */
+    left: auto;
+    top: auto;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    row-gap: 0em;
+    row-gap: 0em; /* 保持原有的 row-gap */
+    padding: 10mm; /* 打印时添加一些页边距 */
+    margin: 0; /* 确保没有外部 margin */
   }
+
+  /* 确保 #print-area 内部的所有元素在打印时都可见 */
+  #print-area * {
+    visibility: visible; /* 额外保证，尽管 display:flex 通常已足够 */
+  }
+
+  /* 针对打印时的 .card-print 样式调整 */
   .card-print {
-    border-style: dashed;
-    box-shadow: none;
-    margin-bottom: 0;
-    margin-top: 0;
-    break-inside: avoid;
-    page-break-inside: avoid;
+    border-style: dashed; /* 保持虚线边框 */
+    box-shadow: none !important; /* 打印时通常不需要阴影 */
+    margin-bottom: 0; /* 保持现有 margin */
+    margin-top: 0;   /* 保持现有 margin */
+    border: 1px solid #ccc !important; /* 打印时给卡片一个明确的实线边框，防止虚线太淡 */
+    margin: 5mm; /* 调整卡片之间的间距，让它们在打印页面上分散得更好 */
+    break-inside: avoid; /* 防止卡片内容在页面中途断开 */
+    page-break-inside: avoid; /* 与 break-inside: avoid 类似，防止卡片被分页 */
+  }
+
+  /* 调整 textarea 样式，使其在打印时更像纯文本 */
+  textarea[readonly] {
+    -webkit-print-color-adjust: exact; /* 确保背景色和文本颜色按原样打印 */
+    color-adjust: exact;
+    background-color: transparent !important; /* 打印时移除背景色 */
+    border: none !important; /* 打印时移除边框 */
+    resize: none !important; /* 禁止调整大小 */
+    color: #000 !important; /* 确保文本颜色为黑色，提高可读性 */
   }
 }
