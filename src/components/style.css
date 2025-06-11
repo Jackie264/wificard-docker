@@ -64,7 +64,7 @@ button {
 
 @media print {
   body * {
-    visibility: hidden;
+    visibility: hidden;
   }
   #print-area,
   #print-area * {
