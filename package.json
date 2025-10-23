@@ -13,7 +13,7 @@
     "qrcode.react": "^4.2.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-i18next": "^16.1.2",
+    "react-i18next": "^16.1.5",
     "react-is": "^19.2.0"
   },
   "devDependencies": {
