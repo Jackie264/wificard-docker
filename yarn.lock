@@ -1084,10 +1084,10 @@ react-fast-compare@^3.2.0:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
   integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
 
-react-i18next@^16.1.5:
-  version "16.1.5"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-16.1.5.tgz#6d9c114d9fb2e1ed14cebb96ddb33ea67e339691"
-  integrity sha512-+0dHUH7zQOXPhS3jt60Dq9nWIg+7xmN9ZrzN2YrBc1MN6kZl9u81qbN5JCkV/F5nsOu0udMbK7n7DiFMCs0PWg==
+react-i18next@^16.1.6:
+  version "16.1.6"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-16.1.6.tgz#ca10c5f8df6d939af26b4d3fa86e2737cd5c0c45"
+  integrity sha512-62Iy0TO/2hJpTa80XaTIbHM4yjpile1YNieeg70vmdi91N2L3Q3MuxXBT0n6JpsryT88utpkqv0QbnIrDSxbAQ==
   dependencies:
     "@babel/runtime" "^7.27.6"
     html-parse-stringify "^3.0.1"
