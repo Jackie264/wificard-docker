@@ -2,7 +2,7 @@
 FROM node:26-alpine AS builder
 
 WORKDIR /app
-
+RUN apk add --no-cache yarn
 COPY package.json yarn.lock ./
 
 RUN yarn install --immutable
