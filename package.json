@@ -14,7 +14,7 @@
     "react": "^19.3.0",
     "react-dom": "^19.2.8",
     "react-i18next": "^17.0.13",
-    "react-is": "^19.2.8"
+    "react-is": "^19.3.0"
   },
   "devDependencies": {
     "@types/react-dom": "^19.2.5",
