@@ -442,10 +442,10 @@ i18next-browser-languagedetector@^8.3.0:
   dependencies:
     "@babel/runtime" "^7.29.2"
 
-i18next@^26.7.1:
-  version "26.7.1"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-26.7.1.tgz#33bc0c45e6be754f0141cbb9289187db27aac485"
-  integrity sha512-cX+3RRVczel/V2kCMTACckSGSpqgtWYEA6beXNYVms7dOQiHojdPYHD26lT4IKimNeoGWrLvtPgjftbRvmZJVw==
+i18next@^27.0.1:
+  version "27.0.1"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-27.0.1.tgz#7a656c8cd0c7169d54f63f887ef01ef9a3e0ba40"
+  integrity sha512-KaE5ozP8UUeVpOJIwMVbbnpRKpyYQuxd9ZbseJoDzezE3nvLnZZQn20pkzyIJwPI2Uet/Qs3WzPTG812f6F/Eg==
 
 indent-string@^4.0.0:
   version "4.0.0"
