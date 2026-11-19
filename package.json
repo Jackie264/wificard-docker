@@ -6,7 +6,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
-    "@testing-library/user-event": "^14.6.10",
+    "@testing-library/user-event": "^14.6.12",
     "evergreen-ui": "^7.1.9",
     "i18next": "^27.1.1",
     "i18next-browser-languagedetector": "^8.3.0",
